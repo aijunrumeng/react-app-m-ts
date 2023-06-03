@@ -4,12 +4,13 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const postcssPresetEnv = require('postcss-preset-env');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
-  devtool: 'inline-source-map',
+  devtool: 'eval-cheap-module-source-map',
   entry: {
     index: './src/index.tsx',
   },
@@ -47,11 +48,9 @@ module.exports = {
         ],
       },
       {
-        test: /\.less$/,
+        test: /\.s[ac]ss$/i,
         use: [
-          {
-            loader: 'style-loader',
-          },
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -66,6 +65,7 @@ module.exports = {
             options: {
               postcssOptions: {
                 plugins: [
+                  postcssPresetEnv(),
                   require('autoprefixer'),
                   require('postcss-pxtorem')({
                     rootValue: 16,
@@ -77,9 +77,9 @@ module.exports = {
             },
           },
           {
-            loader: 'less-loader',
+            loader: 'sass-loader',
             options: {
-              lessOptions: {
+              sassOptions: {
                 javascriptEnabled: true,
               },
             },
@@ -97,7 +97,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [['postcss-preset-env']],
+                plugins: [postcssPresetEnv()],
               },
             },
           },

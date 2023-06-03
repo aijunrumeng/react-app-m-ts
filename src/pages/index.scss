@@ -3,3 +3,9 @@
   user-select: none;
   transition: all 0.5s;
 }
+
+@media (width < 1000px) {
+  .home {
+    color: red;
+  }
+}
